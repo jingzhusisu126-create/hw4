@@ -1,22 +1,21 @@
 class PlacesController < ApplicationController
+  before_action :authenticate_user
+
   def index
-    if session["user_id"]
-      @places = Place.all
-    else
-      redirect_to "/sessions/new"
-    end
+    @places = Place.all
   end
 
   def show
-    if session["user_id"]
-      @place = Place.find_by({ "id" => params["id"] })
+    @place = Place.find_by({ "id" => params["id"] })
+    if @place
       @entries = Entry.where({ "place_id" => @place["id"], "user_id" => session["user_id"] })
     else
-      redirect_to "/sessions/new"
+      redirect_to "/places"
     end
   end
 
   def new
+    @place = Place.new
   end
 
   def create

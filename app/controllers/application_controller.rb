@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
-  before_action :current_user
-
-  def current_user
-    puts "------------------ code before every request ------------------"
+  def authenticate_user
+    unless session["user_id"]
+      redirect_to "/sessions/new"
+    end
   end
 end
